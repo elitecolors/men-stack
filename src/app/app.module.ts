@@ -11,6 +11,7 @@ import { HeaderComponent } from './header/header.component';
 import { PostListComponent  } from './posts/post-list/post-list.component';
 import { PostCreateComponent } from './posts/post-create/post-create.component';
 import { HttpClient } from 'selenium-webdriver/http';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { HttpClient } from 'selenium-webdriver/http';
   imports: [
     BrowserModule,
     FormsModule,
+    AppRoutingModule,
     BrowserAnimationsModule,
     MatInputModule,
     MatCardModule,

@@ -7,7 +7,7 @@ import { PostsService } from '../posts.service';
 templateUrl :  './post-list.component.html',
 selector : 'app-post-list'
 })
-export class PostListComponent  implements OnInit ,OnDestroy{
+export class PostListComponent  implements OnInit , OnDestroy {
 
    posts: Post[] = [];
    private postSub: Subscription;

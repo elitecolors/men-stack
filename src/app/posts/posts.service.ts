@@ -14,7 +14,7 @@ constructor(private http: HttpClient ){}
 
 
 getPosts() {
-  this.http.get<{message:string,posts}>('http://localhost:3000/api/posts')
+  this.http.get<{message: string, posts}>('http://localhost:3000/api/posts')
    .pipe(map((postData) => {
     return postData.posts.map(post => {
       return{
@@ -35,8 +35,12 @@ getPosteUpdateListenner() {
   return this.postUpdated.asObservable();
 }
 
+getPost(id: string) {
+  return this.http.get<{_id: string, title: string, content:string}>('http://localhost:3000/api/posts/' + id);
+}
+
 addPost(title: string, content: string) {
-  const post: Post = {id: null ,title: title, content: content };
+  const post: Post = {id: null , title: title, content: content };
   this.http.post<{message: string, postId: string}>('http://localhost:3000/api/posts', post)
   .subscribe(responseData => {
     post.id = responseData.postId;
@@ -45,6 +49,19 @@ addPost(title: string, content: string) {
 
   });
 
+}
+
+updatePost(id : string, content: string, title: string ){
+  const post: Post = {id: id, title: title, content: content };
+   this.http.put('http://localhost:3000/api/posts/' + id, post)
+   .subscribe(response => {
+     const updatePosts=[...this.posts];
+     const oldPostIndex= updatePosts.findIndex(p=>p.id===post.id);
+     updatePosts[oldPostIndex]=post;
+     this.posts= updatePosts;
+     this.postUpdated.next([...this.posts]);
+
+    });
 }
 
 deletePost(postId: string){

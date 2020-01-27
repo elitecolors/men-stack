@@ -21,10 +21,10 @@ mongoose.connect(uri,
 app.use((req,res,next)=>{
   res.setHeader('Access-Control-Allow-origin','*');
   res.setHeader('Access-Control-Allow-Headers','Origin,X-Requested-With,Content-Type,Accept');
-  res.setHeader('Access-Control-Allow-Methods','POST,GET,DELETE');
+  res.setHeader('Access-Control-Allow-Methods','POST,GET,DELETE,PUT,PATCH');
   next();
 });
-//ZgJqmx6bUvG7mr3S
+
 app.post("/api/posts",(req,res,next) => {
   const post=new Post({
     title: req.body.title,
@@ -36,6 +36,35 @@ app.post("/api/posts",(req,res,next) => {
       postId: result._id
 
     });
+  });
+});
+
+app.put('/api/posts/:id',(req,res,next)=>{
+  const post= new Post({
+    _id: req.body.id,
+    title: req.body.title,
+    content: req.body.content
+
+  });
+  Post.updateOne({_id: req.params.id}, post).then(result=>{
+    res.status(200).json({
+      message: 'update successful!'
+    });
+  });
+});
+
+app.get('/api/posts/:id',(req,res,next)=>{
+
+  Post.findById(req.params.id).then(post=>{
+    if(post){
+      res.status(200).json(post);
+    }
+    else {
+      res.status(404).json({
+        message: 'Post not found ! '
+      });
+    }
+
   });
 });
 

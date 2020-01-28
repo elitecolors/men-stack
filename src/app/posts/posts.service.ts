@@ -66,7 +66,7 @@ updatePost(id : string, content: string, title: string ){
 }
 
 deletePost(postId: string){
-  this.http.delete('http://localhost:3000/api/posts'+postId)
+  this.http.delete('http://localhost:3000/api/posts/'+postId)
   .subscribe(() => {
   const updatePosted = this.posts.filter(post => post.id !== postId);
   this.posts = updatePosted;

@@ -2,7 +2,7 @@ const express= require ('express');
 const app = express();
 const bodYParser= require ('body-parser');
 const mongoose= require ('mongoose');
-
+const path = require ('path');
 const postsRoutes= require('./routes/posts');
 
 const uri = "mongodb+srv://ahmed:ZgJqmx6bUvG7mr3S@cluster0-r88gy.mongodb.net/test?retryWrites=true&w=majority";
@@ -18,6 +18,7 @@ mongoose.connect(uri,
   console.log('Connected to database');
 }).catch(err => console.log(err));
 
+app.use('/images',express.static(path.join('backend/images')));
 
 app.use((req,res,next)=>{
   res.setHeader('Access-Control-Allow-origin','*');

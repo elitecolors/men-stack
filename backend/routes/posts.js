@@ -61,7 +61,6 @@ multer({storage: storage}).single('image'),
     imagePath: imagePath
 
   });
-  console.log(req.params.id);
   Post.updateOne({_id: req.params.id}, post).then(result=>{
     res.status(200).json({
       message: 'update successful!'
@@ -85,15 +84,26 @@ router.get('/:id',(req,res,next)=>{
 });
 
 router.get('' ,(req,res,next)=>{
+  const pageSize= +req.query.pageSize;
+  const currentPage= +req.query.page;
+  const postQuery= Post.find();
+  let fetchedPost ;
+  if(pageSize && currentPage){
+      postQuery.skip(pageSize*(currentPage-1)).limit(pageSize);
+  }
 
-  Post.find().then(documents=>{
+  postQuery
+  .then(documents => {
+    fetchedPost=documents;
+    return Post.count();
+  })
+  .then(count => {
     res.status(200).json({
       message:'posts fetched ',
-      posts: documents
+      posts: fetchedPost,
+      maxPost: count
     });
   });
-
-
 });
 
 router.delete("/:id",(req,res,next)=>{
